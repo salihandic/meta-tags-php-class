@@ -4,7 +4,7 @@
 
 ## Hangi Meta Tagları İçeriyor?
 
-Başlık, açıklama, anahtar kelime başta olmak üzere [Facebook](https://facebook.com) ve [Twitter] meta karları barındırıyor. Bunların dışında favicon diğer ve mobil cihaz iconları da mevcut. Ayrıca [schema.org](https://schema.org/breadcrumb) Breadcrumb ❤ kodlarıda mevcut. Kısacası bir web sitesinde olması gereken tüm meta kodlarını içeriyor.
+Başlık, açıklama, anahtar kelime başta olmak üzere [Facebook](https://developers.facebook.com/docs/sharing/webmasters/) ve [Twitter](https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started.html) meta karları barındırıyor. Bunların dışında favicon diğer ve mobil cihaz iconları da mevcut. Ayrıca [schema.org](https://schema.org/breadcrumb) Breadcrumb ❤ kodlarıda mevcut. Kısacası bir web sitesinde olması gereken tüm meta kodlarını içeriyor.
 
 
 ### Nasıl Kullanılır?
