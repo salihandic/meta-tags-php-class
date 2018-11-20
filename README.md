@@ -1,8 +1,6 @@
 # Meta Tags (PHP Class)
 
-[![Meta Tag](https://i.hizliresim.com/3626pr.png)](https://www.w3schools.com/tags/tag_meta.asp)
-
-[Meta Tag](https://www.w3schools.com/tags/tag_meta.asp)'lar bir sitenin olmazsa olmazı. Meta tagın ne olduğunu bilmiyorsanız satır başındaki linke gidip ne olduğu ve nasıl kullanıldığını inceleyebilirsiniz. 
+[Meta Tag](https://www.w3schools.com/tags/tag_meta.asp)'lar bir sitenin olmazsa olmazı. Meta tagın ne olduğunu bilmiyorsanız baştaki linke gidip ne olduğu ve nasıl kullanıldığını inceleyebilirsiniz. 
 
 ## Hangi Meta Tagları İçeriyor?
 
