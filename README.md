@@ -12,7 +12,7 @@ Başlık, açıklama, anahtar kelime başta olmak üzere [Facebook](https://face
 Meta taglar class içinde gruplandırılmıştır. Örneğin Facebook genel meta tagları ve Facebook Article meta tagları olarak. Her gruplama için bir fonkisyon tanımlıdır. Grupları tek çağırabildiğiniz gibi tüm fonksiyonları tek seferde de çağırabilirsiniz. Yeterki gerekli alanrı doldurun.
 
 ---
-#####Başlıyoruz;
+####### Başlıyoruz;
 İlk önce classı başlatıyoruz ve içini dolduruyoruz.
 
 ```go
