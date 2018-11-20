@@ -7,12 +7,14 @@
 Başlık, açıklama, anahtar kelime başta olmak üzere [Facebook](https://facebook.com) ve [Twitter] meta karları barındırıyor. Bunların dışında favicon diğer ve mobil cihaz iconları da mevcut. Ayrıca [schema.org](https://schema.org/breadcrumb) Breadcrumb ❤ kodlarıda mevcut. Kısacası bir web sitesinde olması gereken tüm meta kodlarını içeriyor.
 
 
-## Nasıl Kullanılır?
+### Nasıl Kullanılır?
 
-Meta taglar clas içinde gruplandırılmıştır. Örneğin Facebook genel meta tagları ve Facebook Article meta tagları olarak. Her gruplama için bir fonkisyon tanımlıdır. Grupları tek çağırabildiğiniz gibi tüm fonksiyonları tek seferde de çağırabilirsiniz. Yeterki gerekli alanrı doldurun.
+Meta taglar class içinde gruplandırılmıştır. Örneğin Facebook genel meta tagları ve Facebook Article meta tagları olarak. Her gruplama için bir fonkisyon tanımlıdır. Grupları tek çağırabildiğiniz gibi tüm fonksiyonları tek seferde de çağırabilirsiniz. Yeterki gerekli alanrı doldurun.
+
 ---
 #####Başlıyoruz;
 İlk önce classı başlatıyoruz ve içini dolduruyoruz.
+
 ```go
 
 $m = new METATAGS([
