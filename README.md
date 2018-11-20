@@ -63,7 +63,7 @@ veya
 ```go
 echo $m->facebook();
 ```
-
+Çıktı;
 ```go
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 		<meta charset="UTF-8"/>
