@@ -1,8 +1,8 @@
 # Meta Tags (PHP Class)
 
+[![Meta Tag](https://i.hizliresim.com/3626pr.png)](https://www.w3schools.com/tags/tag_meta.asp)
 
-
-[Meta Tag](https://www.w3schools.com/tags/tag_meta.asp)'lar bir sitenin olmazsa olmazı. Meta tagın ne olduğunu bilmiyorsanız baştaki linke gidip ne olduğu ve nasıl kullanıldığını inceleyebilirsiniz. 
+[Meta Tag](https://www.w3schools.com/tags/tag_meta.asp)'lar bir sitenin olmazsa olmazı. Meta tagın ne olduğunu bilmiyorsanız satır başındaki linke gidip ne olduğu ve nasıl kullanıldığını inceleyebilirsiniz. 
 
 ## Hangi Meta Tagları İçeriyor?
 
@@ -10,6 +10,7 @@ Başlık, açıklama, anahtar kelime başta olmak üzere [Facebook](https://face
 
 
 ## Nasıl Kullanılır?
+
 Meta taglar clas içinde gruplandırılmıştır. Örneğin Facebook genel meta tagları ve Facebook Article meta tagları olarak. Her gruplama için bir fonkisyon tanımlıdır. Grupları tek çağırabildiğiniz gibi tüm fonksiyonları tek seferde de çağırabilirsiniz. Yeterki gerekli alanrı doldurun.
 ---
 #####Başlıyoruz;
@@ -147,6 +148,5 @@ echo $m->facebook();
 
 ### NOT
 İsteyen geliştirebilir yeni eklemeler yapabilir. Bu class web sitelerinde en çok kullanılan meta tagları içerdiği ve genele hitap ettiği için basit ve kolay anlaşılır şekilde hazırlandı. Yeni eklemelerle daha gelişmiş halini ekleyerek güncelleyeceğim. Unutmazsam tabi :)
-
 
 
