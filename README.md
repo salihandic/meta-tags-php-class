@@ -29,17 +29,18 @@ echo Meta:Twitter([
 Çıktı;
 ```go
 
-<meta name="twitter:site" content="@Google"/>
-<meta name="twitter:creator" itemprop="creator" content="@Google" />
-<meta name="twitter:via" content="Google" />
+<meta name="twitter:title" content="Başlık"/>
+<meta name="twitter:site" content="@salihandic"/>
+<meta name="twitter:creator" content="@salihandic" />
+<meta name="twitter:via" content="salihandic" />
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:url" itemprop:url="url" content="https://www.google.com"/>
-<meta name="twitter:description" itemprop="description" content="Google Search"/>
-<meta name="twitter:image" content="https://peakon.com/wp-content/uploads/2018/06/google-company-culture-5-1120x575.jpg"/>
-<meta name="twitter:image:width" content="1120"/>
-<meta name="twitter:image:height" content="575"/>
-<meta name="twitter:image:alt" content="Google" />
-<meta name="twitter:domain" content="https://www.google.com" />
+<meta name="twitter:url" content="https://www.twitter.com"/>
+<meta name="twitter:description" content=""/>
+<meta name="twitter:image" content=""/>
+<meta name="twitter:image:width" content="640"/>
+<meta name="twitter:image:height" content="640"/>
+<meta name="twitter:image:alt" content="Salih Andıç" />
+<meta name="twitter:domain" content="twitter.com" />
 
 ```
 
