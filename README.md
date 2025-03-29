@@ -1,48 +1,149 @@
-# Meta Tags (PHP Class)
-
-[Meta Tag](https://www.w3schools.com/tags/tag_meta.asp)'lar bir sitenin olmazsa olmazı. Meta tagın ne olduğunu bilmiyorsanız baştaki linke gidip ne olduğu ve nasıl kullanıldığını inceleyebilirsiniz. 
-
-## Hangi Meta Tagları İçeriyor?
-
-Başlık, açıklama, anahtar kelime başta olmak üzere [Facebook](https://developers.facebook.com/docs/sharing/webmasters/) ve [Twitter](https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started.html) meta karları barındırıyor. Bunların dışında favicon diğer ve mobil cihaz iconları da mevcut. Ayrıca [schema.org](https://schema.org/breadcrumb) Breadcrumb ❤ kodlarıda mevcut. Kısacası bir web sitesinde olması gereken tüm meta kodlarını içeriyor.
+Here's a professional README.md for the MetaTags class:
 
 
-### Nasıl Kullanılır?
+# MetaTags PHP Library
 
+A robust and extensible PHP library for generating HTML meta tags and structured data for SEO and social media optimization.
 
+## Features
 
-```go
-echo Meta:Twitter([
-	"site" => "Başlık",
-	"creator" => "@salihandic",
-	"via" => "@salihandic",
-	"card" => "summary_large_image",
-	"url" => "https://twitter.com/salihandic",
-	"description" => "",
-	"image" => "",
-	"image:width" => "640",
-	"image:height" => "640",
-	"image:alt" => "Salih Andıç",
-	"domain" => "twitter.com"
+- Generates basic HTML meta tags
+- Supports Open Graph protocol for Facebook and other platforms
+- Creates Twitter Card meta tags
+- Handles favicon and Apple Touch icons
+- Generates JSON-LD breadcrumb structured data
+- Includes security features like HTML escaping
+- Provides validation for required fields
+- Easily extensible for additional meta tag types
+
+## Requirements
+
+- PHP 7.4 or higher
+- GD extension (for image size detection)
+
+## Installation
+
+You can include this library in your project by copying the `MetaTags.php` file into your codebase. For better dependency management, consider using Composer:
+
+```bash
+composer require your-vendor/metatags
+```
+
+## Usage
+
+Basic usage example:
+
+```php
+<?php
+use Metadata\MetaTags;
+
+$meta = new MetaTags([
+    'title' => 'My Website',
+    'description' => 'A description of my website',
+    'keywords' => 'website, example, php',
+    'image' => 'https://example.com/image.jpg',
+    'link' => 'https://example.com',
+    'canonical' => 'https://example.com',
+    'appname' => 'My App',
+    'creator' => 'johndoe',
+    'applogo' => [
+        's72' => 'https://example.com/logo-72.png',
+        's144' => 'https://example.com/logo-144.png'
+    ],
+    'favicon' => 'https://example.com/favicon.png',
+    'breadcrumbList' => [
+        'Home' => 'https://example.com',
+        'About' => 'https://example.com/about'
+    ]
 ]);
-```
-Çıktı;
-```go
 
-<meta name="twitter:title" content="Başlık"/>
-<meta name="twitter:site" content="@salihandic"/>
-<meta name="twitter:creator" content="@salihandic" />
-<meta name="twitter:via" content="salihandic" />
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:url" content="https://www.twitter.com"/>
-<meta name="twitter:description" content=""/>
-<meta name="twitter:image" content=""/>
-<meta name="twitter:image:width" content="640"/>
-<meta name="twitter:image:height" content="640"/>
-<meta name="twitter:image:alt" content="Salih Andıç" />
-<meta name="twitter:domain" content="twitter.com" />
-
+echo $meta->render();
 ```
 
-### NOT
-İsteyen geliştirebilir yeni eklemeler yapabilir. Bu class web sitelerinde en çok kullanılan meta tagları içerdiği ve genele hitap ettiği için basit ve kolay anlaşılır şekilde hazırlandı. Yeni eklemelerle daha gelişmiş halini ekleyerek güncelleyeceğim. Unutmazsam tabi :)
+### Available Methods
+
+- `render()`: Generates all meta tags
+- `getBasicTags()`: Returns basic HTML meta tags
+- `getOpenGraphTags()`: Returns Open Graph meta tags
+- `getTwitterTags()`: Returns Twitter Card meta tags
+- `getIcons()`: Returns favicon and touch icon tags
+- `getBreadcrumb()`: Returns JSON-LD breadcrumb structured data
+
+### Configuration Options
+
+| Option          | Type   | Description                         | Required |
+|-----------------|--------|-------------------------------------|----------|
+| title           | string | Page title                         | Yes      |
+| description     | string | Page description                   | No       |
+| keywords        | string | Comma-separated keywords           | No       |
+| image           | string | URL to main image                  | No       |
+| link            | string | Page URL                           | No       |
+| canonical       | string | Canonical URL                      | No       |
+| appname         | string | Application/site name              | No       |
+| creator         | string | Twitter handle (without @)         | No       |
+| applogo         | array  | Array of icon sizes and URLs       | No       |
+| favicon         | string | Favicon URL                        | No       |
+| breadcrumbList  | array  | Array of breadcrumb name => URL    | No       |
+| locale          | string | Locale code (default: 'en_US')     | No       |
+| ogtype          | string | Open Graph type (default: 'website') | No     |
+| robots          | string | Robots directive (default: 'index,follow') | No |
+| viewport        | string | Viewport settings (default: 'width=device-width, initial-scale=1.0') | No |
+
+## Example Output
+
+```html
+<title>My Website</title>
+<link rel="canonical" href="https://example.com">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index,follow">
+<meta name="description" content="A description of my website">
+<meta name="keywords" content="website, example, php">
+<meta property="og:site_name" content="My App">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="website">
+<!-- ... more meta tags ... -->
+```
+
+## Extending the Library
+
+To add custom meta tags:
+
+1. Create a new method following the pattern of existing ones
+2. Use the `generateMetaTags()` helper method
+3. Add the new method call to `render()`
+
+Example:
+
+```php
+public function getCustomTags(): string
+{
+    $tags = [
+        'custom:tag' => $this->data->customValue
+    ];
+    return $this->generateMetaTags($tags);
+}
+```
+
+## Security
+
+- All output is escaped using `htmlspecialchars()` to prevent XSS
+- Required fields are validated
+- Invalid image URLs are gracefully handled
+
+## Contributing
+
+Contributions are welcome! Please:
+
+1. Fork the repository
+2. Create a feature branch
+3. Submit a pull request with clear description of changes
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Credits
+
+Developed by Salih Andıç.
