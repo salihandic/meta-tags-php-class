@@ -1,148 +1,272 @@
-<?php 
-/**
- * Class META TAGS
- *
- * @author Salih Andıç
- * @web http://www.salihandic.com/
- * @mail salihandic@outlook.com
- * @date 20 November 2018
- */
+<?php
 
-final class Meta {
-	public static function Statik($locale_code){
-		return '
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-		<meta charset="UTF-8"/>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		<meta name="robots" content="index,follow"/>
-		<meta name="revisit-after" content="1 days"/>
-		<meta name="referrer" content="origin-when-cross-origin"/>
-		<meta name="locale" content="'.$locale_code.'">';
-	}
-	public static function Robot(){
-		return '
-		<meta name="robots" content="all"/>
-		<meta name="googlebot" content="snippet"/>
-		<meta name="googlebot" content="index, follow"/>
-		<meta name="robots" content="index, follow"/>';
-	}
-	public static function Norobot(){
-		return '
-		<meta name="googlebot" content="noindex, nofollow"/>
-		<meta name="robots" content="noindex, nofollow"/>';
-	}
-	public static function Title($title){
-		return '
-		<title>'.$title.'</title>';
-	}
-	public static function Description($desc){
-		return '
-		<meta itemprop="description" name="description" content="'.$desc.'"/>';
-	}
-	public static function Alternate($langList){
-		$LL = "";
-		if(count($langList) > 1):
-			foreach ($langList as $lang):
-				$LL .= '
-				<link rel="alternate" hreflang="'.$lang["hreflang"].'" href="'.home("?lang=".$lang["code"]).'"/>';
-			endforeach;
-		else:
-			$LL = '
-			<link rel="alternate" hreflang="'.$lang["hreflang"].'" href="'.home("?lang=".$lang["code"]).'"/>';
-		endif;
-		return $LL;
-	}
-	public static function Facebook($fb){
-		$fbh = "";
-		if(is_array($fb)):
-			foreach ($fb as $fbkey => $fbrow):
-				$fbh .= '
-				<meta property="og:'.$fbkey.'" content="'.$fbrow.'"/>';
-			endforeach;
-		endif;
-		return $fbh;
-	}
-	public static function Twitter($tw){
-		$twh = "";
-		if(is_array($tw)):
-			foreach ($tw as $twkey => $twrow):
-				$twh .= '
-				<meta name="twitter:'.$twkey.'" content="'.$twrow.'"/>';
-			endforeach;
-		endif;
-		return $twh;
-	}
-	public static function Icon($icon){
-		$iconh = "";
-		if(is_array($icon)):
-			foreach ($icon as $iconkey => $iconrow):
-				$iconh .= '
-				<meta name="'.$iconkey.'" href="'.$iconrow.'"/>';
-			endforeach;
-		endif;
-		return $iconh;
-	}
-	public static function Author($author){
-		return '
-		<meta name="author" itemprop="author" content="'.$author.'"/>';
-	}
-	public static function Canonical($canonical){
-		return '
-		<link rel="canonical" itemprop="url" type="text/html" href="'.$canonical.'"/>';
-	}
-	public static function Manifest($manifest){
-		return '<link rel="manifest" href="'.$manifest.'"/>';
-	}
-	public static function Google($google){
-		return '
-		<meta name="google-site-verification" content="'.$google.'"/>';
-	}
-	public static function Bing($bing){
-		return '
-		<meta name="msvalidate.01" content="'.$bing.'"/>';
-	}
-	public static function Yandex($yandex){
-		return '
-		<meta name="yandex-verification" content="'.$yandex.'"/>';
-	}
-	public static function Amp($amp){
-		return '
-		<meta rel="amphtml" content="'.$amp.'"/>';
-	}
-	public static function Breadcrumb($crumb){
-		$h = '
-		';
-		$count = 0;
-		$bcount = count($crumb);
-		if(is_array($crumb)):
-			$h .= '<script type="application/ld+json">{
-				"@context": "http://schema.org",
-				"@type": "BreadcrumbList",
-				"itemListElement":[';
-				foreach($crumb as $crumbrow):
-					$count++;
-					$h .= '
-					{
-						"@type": "ListItem",
-						"position":"'.$crumbrow["position"].'",
-						"item": {
-							"@id":"'.$crumbrow["id"].'",
-							"name": "'.$crumbrow["name"].'"
-						}
-					}';
-					$h .= $count == $bcount ? '' : ',';
-				endforeach;
-				$h .= '
-				]
-			}</script>';
-		endif;
-		return $h;
-	}
+namespace Metadata;
+
+use InvalidArgumentException;
+
+/**
+ * Class MetaTags
+ * A professional metadata generator for HTML meta tags and structured data
+ */
+class MetaTags
+{
+    private const DEFAULT_ROBOTS = 'index,follow';
+    private const DEFAULT_VIEWPORT = 'width=device-width, initial-scale=1.0';
+    
+    /** @var object */
+    private $data;
+    
+    /** @var array|null */
+    private $imageSize;
+
+    /**
+     * MetaTags constructor
+     *
+     * @param array $data Configuration array
+     * @throws InvalidArgumentException
+     */
+    public function __construct(array $data = [])
+    {
+        $this->data = (object) array_merge($this->getDefaultValues(), $data);
+        $this->validateRequiredFields();
+        $this->imageSize = $this->data->image ? @getimagesize($this->data->image) : null;
+    }
+
+    /**
+     * Get default values for meta tags
+     *
+     * @return array
+     */
+    private function getDefaultValues(): array
+    {
+        return [
+            'appname' => '',
+            'title' => '',
+            'description' => '',
+            'keywords' => '',
+            'image' => '',
+            'link' => '',
+            'canonical' => '',
+            'locale' => 'en_US',
+            'ogtype' => 'website',
+            'robots' => self::DEFAULT_ROBOTS,
+            'viewport' => self::DEFAULT_VIEWPORT,
+            'applogo' => [],
+            'favicon' => '',
+            'creator' => '',
+            'breadcrumb' => []
+        ];
+    }
+
+    /**
+     * Validate required fields
+     *
+     * @throws InvalidArgumentException
+     */
+    private function validateRequiredFields(): void
+    {
+        if (empty($this->data->title)) {
+            throw new InvalidArgumentException('Title is required');
+        }
+    }
+
+    /**
+     * Generate basic meta tags
+     *
+     * @return string
+     */
+    public function getBasicTags(): string
+    {
+        return implode(PHP_EOL, array_filter([
+            '<meta charset="UTF-8">',
+            '<meta http-equiv="X-UA-Compatible" content="IE=edge">',
+            "<meta name=\"viewport\" content=\"{$this->data->viewport}\">",
+            "<meta name=\"robots\" content=\"{$this->data->robots}\">",
+            $this->data->description ? "<meta name=\"description\" content=\"{$this->escape($this->data->description)}\">" : '',
+            $this->data->keywords ? "<meta name=\"keywords\" content=\"{$this->escape($this->data->keywords)}\">" : ''
+        ]));
+    }
+
+    /**
+     * Generate Open Graph meta tags
+     *
+     * @return string
+     */
+    public function getOpenGraphTags(): string
+    {
+        $tags = [
+            "og:site_name" => $this->data->appname,
+            "og:locale" => $this->data->locale,
+            "og:type" => $this->data->ogtype,
+            "og:title" => $this->data->title,
+            "og:description" => $this->data->description,
+            "og:url" => $this->data->link
+        ];
+
+        if ($this->data->image) {
+            $tags["og:image"] = $this->data->image;
+            $tags["og:image:secure_url"] = $this->data->image;
+            if ($this->imageSize) {
+                $tags["og:image:type"] = $this->imageSize['mime'];
+                $tags["og:image:width"] = $this->imageSize[0];
+                $tags["og:image:height"] = $this->imageSize[1];
+            }
+            $tags["og:image:alt"] = $this->data->title;
+        }
+
+        return $this->generateMetaTags($tags, 'property');
+    }
+
+    /**
+     * Generate Twitter Card meta tags
+     *
+     * @return string
+     */
+    public function getTwitterTags(): string
+    {
+        $tags = [
+            "twitter:card" => "summary_large_image",
+            "twitter:site" => "@{$this->data->creator}",
+            "twitter:creator" => "@{$this->data->creator}",
+            "twitter:title" => $this->data->title,
+            "twitter:description" => $this->data->description,
+            "twitter:url" => $this->data->link
+        ];
+
+        if ($this->data->image) {
+            $tags["twitter:image"] = $this->data->image;
+            if ($this->imageSize) {
+                $tags["twitter:image:width"] = $this->imageSize[0];
+                $tags["twitter:image:height"] = $this->imageSize[1];
+            }
+            $tags["twitter:image:alt"] = $this->data->title;
+        }
+
+        return $this->generateMetaTags($tags);
+    }
+
+    /**
+     * Generate favicon and apple touch icons
+     *
+     * @return string
+     */
+    public function getIcons(): string
+    {
+        $output = [];
+        
+        if (!empty($this->data->applogo)) {
+            foreach ($this->data->applogo as $size => $url) {
+                $numericSize = (int) str_replace('s', '', $size);
+                $output[] = "<link rel=\"apple-touch-icon\" sizes=\"{$numericSize}x{$numericSize}\" href=\"{$url}\">";
+                if ($numericSize === 72 || $numericSize === 144) {
+                    $output[] = "<link rel=\"apple-touch-icon-precomposed\" sizes=\"{$numericSize}x{$numericSize}\" href=\"{$url}\">";
+                }
+            }
+        }
+
+        if ($this->data->favicon) {
+            $output[] = "<link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"{$this->data->favicon}\">";
+        }
+
+        return implode(PHP_EOL, $output);
+    }
+
+    /**
+     * Generate breadcrumb structured data
+     *
+     * @return string
+     */
+    public function getBreadcrumb(): string
+    {
+        if (empty($this->data->breadcrumb)) {
+            return '';
+        }
+
+        $items = [];
+        $position = 1;
+        
+        foreach ($this->data->breadcrumb as $name => $url) {
+            $items[] = sprintf(
+                '{"@type":"ListItem","position":%d,"item":{"@id":"%s","name":"%s"}}',
+                $position++,
+                $this->escape($url),
+                $this->escape($name)
+            );
+        }
+
+        return sprintf(
+            '<script type="application/ld+json">{"@context":"http://schema.org","@type":"breadcrumb","itemListElement":[%s]}</script>',
+            implode(',', $items)
+        );
+    }
+
+    /**
+     * Generate all meta tags
+     *
+     * @return string
+     */
+    public function render(): string
+    {
+        return implode(PHP_EOL, array_filter([
+            "<title>{$this->escape($this->data->title)}</title>",
+            $this->data->canonical ? "<link rel=\"canonical\" href=\"{$this->data->canonical}\">" : '',
+            $this->getBasicTags(),
+            $this->getOpenGraphTags(),
+            $this->getTwitterTags(),
+            $this->getIcons(),
+            $this->getBreadcrumb()
+        ]));
+    }
+
+    /**
+     * Generate meta tags from array
+     *
+     * @param array $tags
+     * @param string $attribute
+     * @return string
+     */
+    private function generateMetaTags(array $tags, string $attribute = 'name'): string
+    {
+        $output = [];
+        foreach ($tags as $key => $value) {
+            if ($value !== '' && $value !== null) {
+                $output[] = "<meta {$attribute}=\"{$key}\" content=\"{$this->escape($value)}\">";
+            }
+        }
+        return implode(PHP_EOL, $output);
+    }
+
+    /**
+     * Escape HTML special characters
+     *
+     * @param string $value
+     * @return string
+     */
+    private function escape(string $value): string
+    {
+        return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+    }
 }
 
+// Usage example:
+$meta = new MetaTags([
+    'title' => 'Google',
+    'description' => 'Google Search',
+    'keywords' => 'Google, Search',
+    'image' => 'https://peakon.com/wp-content/uploads/2018/06/google-company-culture-5-1120x575.jpg',
+    'link' => 'https://www.google.com',
+    'canonical' => 'https://www.google.com',
+    'appname' => 'Google',
+    'creator' => 'Google',
+    'applogo' => [
+        's72' => 'https://cdn4.iconfinder.com/data/icons/new-google-logo-2015/400/new-google-favicon-512.png',
+        's144' => 'https://cdn4.iconfinder.com/data/icons/new-google-logo-2015/400/new-google-favicon-512.png'
+    ],
+    'favicon' => 'https://cdn4.iconfinder.com/data/icons/new-google-logo-2015/400/new-google-favicon-512.png',
+    'breadcrumb' => [
+        'Google' => 'https://www.google.com',
+        'About' => 'https://www.google.com/about'
+    ]
+]);
 
-
-
-*/
-?>
+echo $meta->render();
