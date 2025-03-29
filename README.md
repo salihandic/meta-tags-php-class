@@ -21,14 +21,6 @@ A robust and extensible PHP library for generating HTML meta tags and structured
 - PHP 7.4 or higher
 - GD extension (for image size detection)
 
-## Installation
-
-You can include this library in your project by copying the `MetaTags.php` file into your codebase. For better dependency management, consider using Composer:
-
-```bash
-composer require your-vendor/metatags
-```
-
 ## Usage
 
 Basic usage example:
